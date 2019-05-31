@@ -1,8 +1,8 @@
 import gym
 from ddqn_agent import DDQN_Agent
-my_env = gym.make("CartPole-v0")
+curent_env = gym.make("CartPole-v0")
 
-my_env = my_env.unwrapped
+curent_env = curent_env.unwrapped
 """debug information"""
 
 # print("observation:", my_env.observation_space)
@@ -11,8 +11,8 @@ my_env = my_env.unwrapped
 # print("actions:", my_env.action_space)
 """"""
 
-agent = DDQN_Agent(dim_observation=my_env.observation_space.shape[0],
-                            dim_action=my_env.action_space.n,
+agent = DDQN_Agent(dim_observation=curent_env.observation_space.shape[0],
+                            dim_action=curent_env.action_space.n,
                             reward_decay=0.95,
                             l_rate=0.05,
                             bacth_size=32,
@@ -26,22 +26,22 @@ for i in range(1000):
 
     i = agent.episode
 
-    observation = my_env.reset()
+    observation = curent_env.reset()
 
     epi_reward = 0
 
     while True:
 
-        my_env.render()
+        curent_env.render()
 
         action = agent.choose_action(observation)
 
-        observation_, reward, done, info = my_env.step(action)
+        observation_, reward, done, info = curent_env.step(action)
 
         # construct reward
         x, x_dot, theta, theta_dot = observation_
-        r1 = (my_env.x_threshold - abs(x)) / my_env.x_threshold - 0.8
-        r2 = (my_env.theta_threshold_radians - abs(theta)) / my_env.theta_threshold_radians - 0.5
+        r1 = (curent_env.x_threshold - abs(x)) / curent_env.x_threshold - 0.8
+        r2 = (curent_env.theta_threshold_radians - abs(theta)) / curent_env.theta_threshold_radians - 0.5
         reward = 0.6 * r1 + 0.4 * r2
 
         epi_reward = epi_reward + reward
