@@ -1,6 +1,6 @@
 import tensorflow as tf
 import numpy as np
-import pandas as pd
+# import pandas as pd
 import random
 import matplotlib.pyplot as plt
 
@@ -25,8 +25,6 @@ class DDQN_Agent:
 
         self.trainsition_count = 0
 
-        num_steps_sum = 0
-
         self.target_params = tf.get_collection("target_network_para")
         self.evaluate_params = tf.get_collection("evaluate_network_para")
 
@@ -50,7 +48,7 @@ class DDQN_Agent:
         self.step_counter = 0
 
     def replace_target(self):
-        # 把target_work 参数 赋值给 evaluate_network
+        # pass target_work to evaluate_network
         for target, evaluate in zip(self.target_params, self.evaluate_params):
             tf.assign(target, evaluate)
 
