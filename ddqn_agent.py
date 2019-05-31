@@ -56,11 +56,11 @@ class DDQN_Agent:
 
     def build_network(self):
 
-        # 定义输入
+        #define input
         self.state = tf.placeholder(tf.float32, [None, self.ob], name="input_state")
         self.q_target = tf.placeholder(tf.float32, [None, self.dim_action], name="input_q_target")
 
-        # 定义网络结构和参数集合
+        # define network and parameters
 
         with tf.variable_scope("evaluate_network"):
             c_names, n_l1, w_initializer, b_initializer = ["evaluate_network_para", tf.GraphKeys.GLOBAL_VARIABLES], \
@@ -85,7 +85,6 @@ class DDQN_Agent:
         with tf.variable_scope("train"):
             self.train_op = tf.train.RMSPropOptimizer(self.l_rate).minimize(self.loss)
 
-        # --------------------------------------- 定义 target_network------------------------------------------------
 
         self.state_next = tf.placeholder(tf.float32, [None, self.ob], name="input_next_state")
         with tf.variable_scope("target_network"):
@@ -114,7 +113,7 @@ class DDQN_Agent:
     def choose_action(self, observation):
         random_value = random.random()
         observation = observation[np.newaxis, :]
-        if random_value < self.epsilon:  # 举例： 90%的概率选择 Qmax的action
+        if random_value < self.epsilon:  # the possibility
             action_values = self.sess.run(self.q_eval, feed_dict={self.state: observation})
             #    action_values = self.sess.run(self.q_eval,feed_dict={self.s    :observation})
 
@@ -130,7 +129,7 @@ class DDQN_Agent:
         else:
             self.epsilon = self.epsilon_base
 
-        # print("当前transition数量：%s"%self.trainsition_count)
+        # print("current transition amount：%s"%self.trainsition_count)
 
         if self.trainsition_count < self.batch_size:
             print("continue")
@@ -159,7 +158,7 @@ class DDQN_Agent:
 
         q_next, q_evaluate = self.sess.run([self.q_next, self.q_eval], feed_dict={self.state_next: s_, self.state: s})
 
-        # 接下来计算q_target，用q_target来计算self.loss ,对q_target = r + gamma*q_next进行改写
+        # q_target，using q_target to calculate self.loss ,rewrite q_target = r + gamma*q_next
         q_target = q_evaluate.copy()
 
         q_target[:, a] = r + self.gamma * np.max(q_next, axis=1)
