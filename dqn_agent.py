@@ -91,8 +91,8 @@ class DQN_agent:
         else:
             action = np.random.randint(0,self.n_actions)
         return action
-
     def learn(self):
+
         if self.learn_step_counter % self.replace_target_iter == 0:
             self.sess.run(self.target_replace_op)  # 执行eval_net赋值给target_net的复制网络，主要是复制参数
             print('\ntarget_params_replaced\n')
